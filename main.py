@@ -1,5 +1,27 @@
 from __future__ import annotations
+import pygame
+pygame.init()
+import sys
 
+#VARIABLES SETUP
+names = ["Morten", "Ib", "phillip"]
+lastnames = ["Mortensen", "Bentsen", "Hansen"]
+
+white = (255, 255, 255)
+grey = (155, 155, 155)
+black = (0, 0, 0)
+
+#PyGame Setup
+clock = pygame.time.Clock()
+fps = 60
+win = pygame.display.set_mode((500, 500))
+pygame.display.set_caption("PassportU")
+
+def waitingScene():
+    win.fill(black)
+
+
+#STATE MACHINE SETUP
 class PassportStop:
     _state = None
 
@@ -34,9 +56,6 @@ class PassportStop:
     def sendCostumerAway(self):
         self._state.sendCostumerAway()
 
-
-
-
 class State():
     @property
     def game(self) -> PassportStop:
@@ -46,7 +65,11 @@ class State():
     def game(self, game: PassportStop):
         self._game = game
 
+
+
 class Waiting(State):
+
+    win.fill(grey)
 
     def takeCostumer(self) -> None:
         print("Costumer ariving")
@@ -72,6 +95,9 @@ class Waiting(State):
 
 
 class Costumer(State):
+
+    win.fill(black)
+
     def takeCostumer(self) -> None:
         print("There are already a costumer")
 
@@ -127,6 +153,9 @@ class PassportCheck(State):
 
 
 class Search(State):
+
+    win.fill(white)
+
     def takeCostumer(self) -> None:
         print("There are already a costumer")
 
@@ -203,12 +232,52 @@ class NotAllowed(State):
         self.game.setGame(Waiting())
 
 
-
-
+count = 0
 if __name__ == "__main__":
+
     print("Game Has Started")
     GameState = PassportStop(Waiting())
+    LastRun = 0
+
+    run = True
+    while run:
+        clock.tick(fps)
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+
+                run = False
+                sys.exit()
+            
+            keys = pygame.key.get_pressed()
+
+            if count == 0:
+                if keys[pygame.K_a]:
+                        GameState.takeCostumer()
+                        count = 1
+
+                if keys[pygame.K_d]:
+                        GameState.sendToSearch()
+                        count = 1
+
+                if keys[pygame.K_s]:
+                        GameState.sendCostumerAway()
+                        count = 1
+
+            if pygame.key.get_pressed().count(True) == 0:
+                count = 0
+
+
+
+            pygame.display.update()
+
+
+
+
+    GameState = PassportStop(Waiting())
     GameState.takeCostumer()
+    GameState.askForPass()
     GameState.sendToSearch()
     GameState.sendCostumerAway()
 
