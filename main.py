@@ -253,17 +253,35 @@ if __name__ == "__main__":
             keys = pygame.key.get_pressed()
 
             if count == 0:
-                if keys[pygame.K_a]:
+                if keys[pygame.K_t]:
                         GameState.takeCostumer()
                         count = 1
 
-                if keys[pygame.K_d]:
+                if keys[pygame.K_s]:
                         GameState.sendToSearch()
                         count = 1
 
-                if keys[pygame.K_s]:
+                if keys[pygame.K_q]:
                         GameState.sendCostumerAway()
                         count = 1
+                        
+                if keys[pygame.K_p]:
+                        GameState.askForPass()
+                        count = 1
+                        
+                if keys[pygame.K_a]:
+                        GameState.approve()
+                        count = 1
+                        
+                if keys[pygame.K_e]:
+                        GameState.askCostumerToEnter()
+                        count = 1
+                        
+                if keys[pygame.K_d]:
+                        GameState.deny()
+                        count = 1
+
+# Take Custumer(t); Send To Search(s); Send Custumer Away(q); Ask For Pass(p); Approve(a); Ask Custumer To Enter(e); Deny(d)
 
             if pygame.key.get_pressed().count(True) == 0:
                 count = 0
