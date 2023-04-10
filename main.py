@@ -1,5 +1,6 @@
 from __future__ import annotations
 import pygame
+import pygame_gui
 pygame.init()
 import sys
 
@@ -10,12 +11,15 @@ lastnames = ["Mortensen", "Bentsen", "Hansen"]
 white = (255, 255, 255)
 grey = (155, 155, 155)
 black = (0, 0, 0)
+green = (0, 255, 0)
 
 #PyGame Setup
 clock = pygame.time.Clock()
 fps = 60
-win = pygame.display.set_mode((500, 500))
+windowSize = (500, 500)
+win = pygame.display.set_mode(windowSize)
 pygame.display.set_caption("PassportU")
+gui_manager = pygame_gui.UIManager(windowSize)
 
 def waitingScene():
     win.fill(black)
@@ -69,10 +73,12 @@ class State():
 
 class Waiting(State):
 
-    win.fill(grey)
+    
 
     def takeCostumer(self) -> None:
         print("Costumer ariving")
+        win.fill(grey)
+        ##RIGHT HERE
         self.game.setGame(Costumer())
 
     def askForPass(self) -> None:
@@ -96,7 +102,7 @@ class Waiting(State):
 
 class Costumer(State):
 
-    win.fill(black)
+    pygame.Surface((500, 500)).fill(grey)
 
     def takeCostumer(self) -> None:
         print("There are already a costumer")
@@ -235,9 +241,11 @@ class NotAllowed(State):
 count = 0
 if __name__ == "__main__":
 
+    win.fill(green)
     print("Game Has Started")
     GameState = PassportStop(Waiting())
     LastRun = 0
+    
 
     run = True
     while run:
@@ -286,7 +294,7 @@ if __name__ == "__main__":
             if pygame.key.get_pressed().count(True) == 0:
                 count = 0
 
-
+            gui_manager.draw_ui(win)
 
             pygame.display.update()
 
